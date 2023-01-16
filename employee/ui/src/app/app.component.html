@@ -1,0 +1,130 @@
+<div class="container">
+    <div class="card mt-5" style="align-items: center;">
+        <h1>Employee Dashboard</h1>
+    </div>
+
+    <div class="card mt-5" style="padding: 20px;">
+        <form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
+            <div class="form-group">
+                <label for="name">Employee Name :</label>
+                <input type="text" #name (ngModel)="name" name="name" id="name" class="form-control"
+                    placeholder="Employee name">
+            </div>
+            <div class="form-group">
+                <label for="name">Employee Surname :</label>
+                <input type="text" #surname (ngModel)="surname" name="surname" id="surname" class="form-control"
+                    placeholder="Employee surname">
+            </div>
+            <div class="form-group">
+                <label for="name">Employee DOB :</label>
+                <input type="text" #dob (ngModel)="dob" name="dob" id="dob" class="form-control"
+                    placeholder="Employee dob">
+            </div>
+            <div class="form-group">
+                <label for="name">Employee JoiningDate :</label>
+                <input type="text" #joiningDate (ngModel)="joiningDate" name="joiningDate" id="joiningDate"
+                    class="form-control" placeholder="Employee joiningDate">
+            </div>
+            <div class="form-group">
+                <label for="name">Employee State :</label>
+                <input type="text" #state (ngModel)="state" name="state" id="state" class="form-control"
+                    placeholder="Employee state">
+            </div>
+            <div class="form-group">
+                <label for="name">Employee Pincode :</label>
+                <input type="text" #pincode (ngModel)="pincode" name="pincode" id="pincode" class="form-control"
+                    placeholder="Employee pincode">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register" class="btn btn-primary w-100">
+            </div>
+        </form>
+    </div>
+    <div class="mt-5">
+        <table class="table table-bordered">
+            <thead class="thead">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>DOB</th>
+                    <th>JoiningDate</th>
+                    <th>State</th>
+                    <th>Pincode</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+                <tr *ngFor="let employee of employeeDetails">
+                    <td> {{employee.id}} </td>
+                    <td> {{employee.name}} </td>
+                    <td> {{employee.surname}} </td>
+                    <td> {{employee.dob}} </td>
+                    <td> {{employee.joiningDate}} </td>
+                    <td> {{employee.state}} </td>
+                    <td> {{employee.pincode}} </td>
+                    <td> <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal" (click)="edit(employee)">Edit</button> </td>
+                    <td> <button type="button" class="btn btn-danger" (click)="deleteEmployee(employee)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #updateForm="ngForm" (ngSubmit)="updateEmployee()">
+                    <div class="form-group">
+                        <label for="name">Employee Id :</label>
+                        <input type="text" #id [(ngModel)]="employeeToUpdate.id" name="id" id="id" class="form-control"
+                            placeholder="Employee id">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Employee Name :</label>
+                        <input type="text" #name [(ngModel)]="employeeToUpdate.name" name="name" id="name" class="form-control"
+                            placeholder="Employee name">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Employee Surname :</label>
+                        <input type="text" #surname [(ngModel)]="employeeToUpdate.surname" name="surname" id="surname" class="form-control"
+                            placeholder="Employee surname">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Employee DOB :</label>
+                        <input type="text" #dob [(ngModel)]="employeeToUpdate.dob" name="dob" id="dob" class="form-control"
+                            placeholder="Employee dob">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Employee JoiningDate :</label>
+                        <input type="text" #joiningDate [(ngModel)]="employeeToUpdate.joiningDate" name="joiningDate" id="joiningDate"
+                            class="form-control" placeholder="Employee joiningDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Employee State :</label>
+                        <input type="text" #state [(ngModel)]="employeeToUpdate.state" name="state" id="state" class="form-control"
+                            placeholder="Employee state">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Employee Pincode :</label>
+                        <input type="text" #pincode [(ngModel)]="employeeToUpdate.pincode" name="pincode" id="pincode" class="form-control"
+                            placeholder="Employee pincode">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Update" class="btn btn-primary w-100">
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,3 +1,0 @@
-LANL
-Version: @project.version@
-Built at: @buildDate@
