@@ -1,17 +1,156 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>upload excel</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="/css/example.css" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Los Alamos Nat'l Labs</title>
 </head>
 <body>
-<div id="content">
-    <form action="/upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" value="select..." />
-    <input type="submit" value="upload" />
-    </form>
-    <p><a href="/uploaded">test</a></p>
+
+<div class="container d-flex justify-content-center">
+    <div class="card">
+        <h2 class="card-header p-5 bg-light text-center text-secondary">
+            Los Alamos Nat'l Labs
+        </h2>
+        <div class="card-body">
+        	<form action="/upload" method="post" enctype="multipart/form-data">
+        		<div class="text-center">
+                    <h5>Load Your Data:</h5>
+				    <input type="file" name="file" value="select..." />
+				    <br>
+                    <button align="right" type="submit" class="btn btn-outline-success my-2 my-sm-0" >Submit</button>
+                </div>
+			</form>
+        <!--
+            <form th:object="${carpet}" method="post" th:action="@{/confirmation}">
+                <div class="text-center">
+                    <h5>Please pick one of the following shapes:</h5>
+
+                    <div class="form-row align='center'">
+                        <div class="form-check col">
+                            <input class="form-check-input" type="radio" name="shapes" id="circleRadio"
+                                   value="circle" required>
+                            <label class="form-check-label font-weight-bold text-primary" for="circleRadio">
+                                Circle
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 font-weight-light text-left">
+                            <label for="radiusInput">Radius</label>
+                            <input type="number" class="form-control" id="radiusInput" min="1" placeholder="Radius" disabled="disabled" th:field="*{shape.radius}">
+                        </div>
+                    </div>
+                    <div class="form-row align='center'">
+                        <div class=" form-check col">
+                            <input class="form-check-input align='center'" type="radio" name="shapes" id="triangleRadio"
+                                   value="triangle" required>
+                            <label class="form-check-label font-weight-bold text-primary" for="triangleRadio">
+                                Triangle
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-row font-weight-light text-left">
+                        <div class="form-group col-md-6">
+                            <label for="radiusInput">Base</label>
+                            <input type="number" class="form-control" id="baseInput" min="1" placeholder="Base" th:field="*{shape.base}" disabled="disabled">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="radiusInput">Height</label>
+                            <input type="number" class="form-control" id="heightInput" min="1" placeholder="Height" th:field="*{shape.height}" disabled="disabled">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-check col align='center'">
+                            <input class="form-check-input" type="radio" name="shapes" id="rectangleRadio"
+                                   value="rectangle" required>
+                            <label class="form-check-label font-weight-bold text-primary" for="rectangleRadio">
+                                Rectangle
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-row font-weight-light text-left">
+                        <div class="form-group col-md-6">
+                            <label for="radiusInput">Length</label>
+                            <input type="number" class="form-control" id="lengthInput" min="1" placeholder="Length" th:field="*{shape.length}" disabled="disabled">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="radiusInput">Width</label>
+                            <input type="number" class="form-control" id="widthInput" min="1" placeholder="Width" th:field="*{shape.width}" disabled="disabled">
+                        </div>
+                    </div>
+                    <h5>Please pick the city you are buying from:</h5>
+                    <div class="form-row font-weight-light text-left">
+                        <label for="inputCity">City</label>
+                        <select id="inputCity" class="form-control" th:field="*{city}" required>
+                            <option value="" selected>Choose a city</option>
+                            <option th:each="theCity : ${cities}" th:value="${theCity}" th:text="${theCity}"></option>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-outline-success my-2 my-sm-0" >Submit</button>
+                    </div>
+                </div>
+            </form>
+            -->
+        </div>
+    </div>
+
 </div>
+
+
+<!-- Optional JavaScript -->
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("input[name='shapes']").click(function () {
+            if ($("#circleRadio").is(":checked")) {
+                $("#radiusInput").removeAttr("disabled");
+                $("#radiusInput").focus();
+            } else {
+                $("#radiusInput").attr("disabled", "disabled");
+            }
+
+            if ($("#triangleRadio").is(":checked")) {
+                $("#baseInput").removeAttr("disabled");
+                $("#baseInput").focus();
+                $("#heightInput").removeAttr("disabled");
+                $("#heightInput").focus();
+
+            } else {
+                $("#baseInput").attr("disabled", "disabled");
+                $("#heightInput").attr("disabled", "disabled");
+            }
+
+            if ($("#rectangleRadio").is(":checked")) {
+                $("#lengthInput").removeAttr("disabled");
+                $("#lengthInput").focus();
+                $("#widthInput").removeAttr("disabled");
+                $("#widthInput").focus();
+            } else {
+                $("#lengthInput").attr("disabled", "disabled");
+                $("#widthInput").attr("disabled", "disabled");
+            }
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 </html>
