@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Notification SSE Exampler</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="css/bootstrap.min.css" rel="stylesheet" />
+	<link href="css/font-awesome.min.css" rel="stylesheet" />
+	<link href="css/master.css" rel="stylesheet" />
+	<link href="css/animations.css" rel="stylesheet" />
+</head>
+<body ng-app="rabbitReceptor">
+	<div class="container" ng-controller="receiverCtrl">
+		
+		<div class="row">
+			<div  class="col-md-6">
+				<img alt="" src="img/banner.svg" class="img-responsive" style="vertical-align: top;">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6" style="padding-top: 10px;border: solid thin white; border-radius: 4px;">
+					<p>Started Session at: {{sessionData.fmtSessionStart}}</p>
+					<p>Total Messages Received: {{sessionData.numMsg}}</p>
+					<p>Max Messages until backup: {{sessionData.maxMsg}}</p>
+					<p>Messages in backup: {{sessionData.backUp.length}}</p>
+			</div>
+		</div>
+		<br/>
+		<br/>
+		<div class="row">
+			<div class="col-md-6" align="right">
+					<form id="ninja" action="http://localhost:7071/sendMsgCustomer.rest" method="GET">
+					    <input type="submit" value="Submit">
+					</form>		
+			</div>
+		</div>
+		
+	</div>
+		
+	<script type="text/javascript" src="jslib/jquery.min.js"></script>
+	<script type="text/javascript" src="jslib/angular.min.js"></script>
+	<script type="text/javascript" src="jslib/bootstrap.min.js"></script>
+	<script type="text/javascript" src="jslib/ui-bootstrap-tpls.js"></script>
+	<script type="text/javascript" src="jslib/moment-with-locales.min.js"></script>
+	<script type="text/javascript" src="jslib/underscore-min.js"></script>
+	
+	<script type="text/javascript" src="app/app.js"></script>
+
+</body>
+</html>

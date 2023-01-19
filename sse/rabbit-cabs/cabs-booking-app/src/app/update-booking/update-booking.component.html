@@ -1,0 +1,48 @@
+<div class="container">
+<div class="card">
+    <div class="card-body">
+<h3>Update Booking</h3>
+<div [hidden]="submitted" style="width: 400px;">
+    <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="name">Passenger Name</label>
+            <input type="text" class="form-control" id="passengerName" required [(ngModel)]="booking.passengerName"
+                name="passengerName">
+        </div>
+
+        <div class="form-group">
+            <label for="name">Passenger ContactNumber</label>
+            <input type="text" class="form-control" id="passengerContactNumber" required
+                [(ngModel)]="booking.passengerContactNumber" name="passengerContactNumber" placeholder="Name e.g Kamoche">
+        </div>
+
+        <div class="form-group">
+            <label for="name">PickupTime</label>
+            <input type="text" class="form-control" id="pickupTime" required [(ngModel)]="booking.pickupTime" name="pickupTime" placeholder="valid format e.g 2020-26-01 14:00:36" >
+        </div>
+        <div class="form-group">
+            <label for="name">Asap</label>
+            <input type="text" class="form-control" id="asap" required [(ngModel)]="booking.asap" name="asap" placeholder="true or false">
+        </div>
+        <div class="form-group">
+            <label for="name">WaitingTime</label>
+            <input type="text" class="form-control" id="waitingTime" required [(ngModel)]="booking.waitingTime" name="waitingTime" placeholder=" e.g 1,2,3....">
+        </div>
+        <div class="form-group">
+            <label for="name">NoOfPassengers</label>
+            <input type="text" class="form-control" id="noOfPassengers" required [(ngModel)]="booking.noOfPassengers" name="noOfPassengers" placeholder="e.g 1,2,3">
+        </div>
+        <div class="form-group">
+            <label for="name">Price</label>
+            <input type="text" class="form-control" id="price" required [(ngModel)]="booking.price" name="price" placeholder="e.g 50,100,1000 ...">
+        </div>
+        <div class="form-group">
+            <label for="name">Rating</label>
+            <input type="text" class="form-control" id="rating" required [(ngModel)]="booking.rating" name="rating" placeholder="e.g 10,192">
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+</div>
+</div>
+</div>
+</div>

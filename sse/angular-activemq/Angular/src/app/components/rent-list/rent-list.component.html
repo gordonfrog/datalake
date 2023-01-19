@@ -1,0 +1,149 @@
+<div class="container">
+  <app-add-rent></app-add-rent>
+  <br>
+  <div class="container" *ngIf="rents?.length > 0; else noItems">
+    <h4>{{receivedPerson.name}}'s list of rents</h4>
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="col-sm-4">
+            <label for="sort-field"><b>Sort By</b></label>
+            <select name="sort-field" id="sort-field" class="form-control" [(ngModel)]="sortField">
+              <option *ngFor="let field of sortFields" [value]="field">
+                {{field}}
+              </option>
+            </select>
+          </div>
+          <label id="direction"><b>Sort Direction</b></label>
+          <div id="order">
+            <button class="btn btn-light-green btn-sm" id="asc" (click)="onAsc()">
+              Ascending
+            </button>
+
+            <button class="btn btn-mdb btn-sm" id="desc" (click)="onDesc()">
+              Descending
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-4" *ngFor="let rent of rents | sortBy: [sortField, sortDirection]">
+        <br>
+        <div class="card card-body" id="rent_card">
+          <h4 class="card-title">{{rent.vehicule.model}}</h4>
+          <li class="card-text">{{ rent.beginRent | date:"dd/MM/yyyy"}}</li>
+          <li class="card-text">{{ rent.endRent | date:"dd/MM/yyyy" }}</li>
+          <li class="card-text">{{ rent.numberOfDays }} days</li>
+          <li class="card-text" id="rent_list">{{ rent.finalPrice | currency:"USD":"symbol"}}</li>
+          <div class="row">
+            <button class="btn btn-primary btn-sm" mdbRippleRadius (click)="onEditClick(rent)">Edit</button>
+            <button class="btn btn-danger btn-sm" mdbRippleRadius (click)="onDeleteClick(rent.rentId)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <button class="btn btn-elegant btn-sm" mdbRippleRadius routerLink="/persons">Back</button>
+    <br>
+    <br>
+  </div>
+
+
+  <div mdbModal #updateModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title w-100" id="myModalLabel">Edit Rent</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="updateModal.hide()">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form (submit)="onSubmit()" #updateForm="ngForm">
+            <div class="md-form">
+              <input required #rbegin="ngModel" onfocus="(this.type='date')" onblur="(this.type='text')" type="text" id="defaultForm-begin"
+                class="form-control" mdbActive [ngModel]="rent.beginRent" name="begin">
+              <label [class.active]="rent.beginRent && rent.beginRent.length !== null" for="defaultForm-begin">Begin</label>
+            </div>
+            <div class="alert alert-danger" *ngIf="rbegin.touched && !rbegin.valid">
+              <div *ngIf="rbegin.errors.required">
+                The begin date is required.
+              </div>
+            </div>
+
+            <div class="md-form">
+              <input required #rend="ngModel" onfocus="(this.type='date')" onblur="(this.type='text')" type="text" id="defaultForm-end"
+                class="form-control" mdbActive [ngModel]="rent.endRent" name="end">
+              <label [class.active]="rent.endRent && rent.endRent.length !== null" for="defaultForm-end">End</label>
+            </div>
+            <div class="alert alert-danger" *ngIf="rend.touched && !rend.valid">
+              <div *ngIf="rend.errors.required">
+                The end date is required.
+              </div>
+            </div>
+
+            <div class="text-justify">
+              <button class="btn btn-success" mdbRippleRadius [disabled]="!updateForm.valid">Add</button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-elegant btn-sm waves-light" data-dismiss="modal" (click)="updateModal.hide()" mdbRippleRadius>Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div mdbModal #deleteConf="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title w-100" id="myModalLabel">Delete Rent</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="deleteConf.hide()">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this rent?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-sm waves-light" data-dismiss="modal" (click)="onProceed()" mdbRippleRadius>Proceed</button>
+          <button type="button" class="btn btn-elegant btn-sm waves-light" data-dismiss="modal" (click)="deleteConf.hide()" mdbRippleRadius>Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div mdbModal #badInput="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title w-100" id="myModalLabel">Error</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="badInput.hide()">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>{{errorMessage}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-sm waves-light" data-dismiss="modal" (click)="badInput.hide()" mdbRippleRadius>Got it</button>
+          <button type="button" class="btn btn-elegant btn-sm waves-light" data-dismiss="modal" (click)="badInput.hide()" mdbRippleRadius>Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noItems>
+    <div class="container">
+      <h4>{{receivedPerson.name}}'s rent list is empty.</h4>
+      <button class="btn btn-elegant btn-sm" mdbRippleRadius routerLink="/persons">Back</button>
+    </div>
+    <br>
+    <br>
+  </ng-template>
+
+
+</div>

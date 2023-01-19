@@ -1,0 +1,186 @@
+<h4>Add a vehicule to the database</h4>
+<br>
+<div>
+  <form class="form-inline">
+    <div class="form-group">
+      <input name="group1" type="radio" id="radio11" checked="checked" (click)="toggleCar()">
+      <label>Car</label>
+    </div>
+
+    <div class="form-group">
+      <input name="group1" type="radio" id="radio11" (click)="toggleVan()">
+      <label>Van</label>
+    </div>
+    <br>
+  </form>
+</div>
+<br>
+<div class="container" *ngIf="choice; else CarTemp">
+  <form (submit)="onSubmitVan()" #addVanForm="ngForm">
+    <div class="md-form">
+      <input required minlength="5" maxlength="40" pattern="[a-zA-Z0-9-.# ]*" #model="ngModel" type="text" id="defaultForm-model"
+        class="form-control" mdbActive [(ngModel)]="van.model" name="model">
+      <label [class.active]="van.model && van.model.length > 0" for="defaultForm-model">Model</label>
+    </div>
+    <div class="alert alert-danger" *ngIf="model.touched && !model.valid">
+      <div *ngIf="model.errors.required">
+        The model is required.
+      </div>
+      <div *ngIf="model.errors.minlength && !model.errors.pattern">
+        The model should be at least 5 characters.
+      </div>
+      <div *ngIf="model.errors.pattern">
+        Invalid character specified.
+      </div>
+    </div>
+
+    <div class="md-form">
+      <input required minlength="9" maxlength="9" pattern="[A-Z0-9- ]*" #plate="ngModel" type="text" id="defaultForm-plateNumber"
+        class="form-control" mdbActive [(ngModel)]="van.plateNumber" name="p_number">
+      <label [class.active]="van.plateNumber && van.plateNumber.length > 0" for="defaultForm-plateNumber">Plate Number</label>
+    </div>
+    <div class="alert alert-danger" *ngIf="plate.touched && !plate.valid">
+      <div *ngIf="plate.errors.required">
+        The plate number is required.
+      </div>
+      <div *ngIf="plate.errors.minlength && !plate.errors.pattern">
+        The plate number should be at least 9 characters.
+      </div>
+      <div *ngIf="plate.errors.pattern">
+        Invalid character detected.
+      </div>
+    </div>
+
+    <div class="md-form">
+      <input required #weight="ngModel" type="number" min="1500" step="any" id="defaultForm-weight" class="form-control" mdbActive
+        [(ngModel)]="van.maxWeight" name="weight">
+      <label [class.active]="van.maxWeight && van.maxWeight.length !== null" for="defaultForm-weight">Max Weight</label>
+    </div>
+    <div class="alert alert-danger" *ngIf="weight.touched && !weight.valid">
+      <div *ngIf="weight.errors.required">
+        The maximum weight is required.
+      </div>
+    </div>
+
+    <div class="md-form">
+      <input required #price="ngModel" type="number" min="1" step="any" id="defaultForm-price" class="form-control" mdbActive [(ngModel)]="van.price"
+        name="price">
+      <label [class.active]="van.price && van.price.length !== null" for="defaultForm-price">Price</label>
+    </div>
+    <div class="alert alert-danger" *ngIf="price.touched && !price.valid">
+      <div *ngIf="price.errors.required">
+        The price is required.
+      </div>
+    </div>
+
+    <div class="text-justify">
+      <button class="btn btn-success" mdbRippleRadius [disabled]="!addVanForm.valid">Add</button>
+    </div>
+  </form>
+</div>
+
+<ng-template #CarTemp>
+  <div class="container">
+    <form (submit)="onSubmitCar()" #addCarForm="ngForm">
+      <div class="md-form">
+        <input required minlength="5" maxlength="40" pattern="[a-zA-Z0-9-.# ]*" #model="ngModel" type="text" id="defaultForm-model"
+          class="form-control" mdbActive [(ngModel)]="car.model" name="model">
+        <label [class.active]="car.model && car.model.length > 0" for="defaultForm-model">Model</label>
+      </div>
+      <div class="alert alert-danger" *ngIf="model.touched && !model.valid">
+        <div *ngIf="model.errors.required">
+          The model is required.
+        </div>
+        <div *ngIf="model.errors.minlength && !model.errors.pattern">
+          The model should be at least 5 characters.
+        </div>
+        <div *ngIf="model.errors.pattern">
+          Invalid character specified.
+        </div>
+      </div>
+
+      <div class="md-form">
+        <input required minlength="9" maxlength="9" pattern="[A-Z0-9- ]*" #plate="ngModel" type="text" id="defaultForm-plateNumber"
+          class="form-control" mdbActive [(ngModel)]="car.plateNumber" name="p_number">
+        <label [class.active]="car.plateNumber && car.plateNumber.length > 0" for="defaultForm-plateNumber">Plate Number</label>
+      </div>
+      <div class="alert alert-danger" *ngIf="plate.touched && !plate.valid">
+        <div *ngIf="plate.errors.required">
+          The plate number is required.
+        </div>
+        <div *ngIf="plate.errors.minlength && !plate.errors.pattern">
+          The plate number should be at least 9 characters.
+        </div>
+        <div *ngIf="plate.errors.pattern">
+          Invalid character detected.
+        </div>
+      </div>
+
+      <div class="md-form">
+        <input required #seats="ngModel" type="number" min="2" max="10" id="defaultForm-seats" class="form-control" mdbActive [(ngModel)]="car.seats"
+          name="seats">
+        <label [class.active]="car.seats && car.seats.length !== null" for="defaultForm-seats">Seats</label>
+      </div>
+      <div class="alert alert-danger" *ngIf="seats.touched && !seats.valid">
+        <div *ngIf="seats.errors.required">
+          The number of seats is required.
+        </div>
+      </div>
+
+      <div class="md-form">
+        <input required #price="ngModel" type="number" min="1" step="any" id="defaultForm-price" class="form-control" mdbActive [(ngModel)]="car.price"
+          name="price">
+        <label [class.active]="car.price && car.price.length !== null" for="defaultForm-price">Price</label>
+      </div>
+      <div class="alert alert-danger" *ngIf="price.touched && !price.valid">
+        <div *ngIf="price.errors.required">
+          The price is required.
+        </div>
+      </div>
+
+      <div class="text-justify">
+        <button class="btn btn-success" mdbRippleRadius [disabled]="!addCarForm.valid">Add</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<div mdbModal #vanBadInput="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Error</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="vanBadInput.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{errorMessage}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-sm waves-light" data-dismiss="modal" (click)="vanBadInput.hide()" mdbRippleRadius>Got it</button>
+        <button type="button" class="btn btn-elegant btn-sm waves-light" data-dismiss="modal" (click)="vanBadInput.hide()" mdbRippleRadius>Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div mdbModal #carBadInput="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Error</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="carBadInput.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{errorMessage}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-sm waves-light" data-dismiss="modal" (click)="carBadInput.hide()" mdbRippleRadius>Got it</button>
+        <button type="button" class="btn btn-elegant btn-sm waves-light" data-dismiss="modal" (click)="carBadInput.hide()" mdbRippleRadius>Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

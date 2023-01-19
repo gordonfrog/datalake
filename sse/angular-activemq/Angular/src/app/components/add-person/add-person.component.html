@@ -1,0 +1,35 @@
+<h4>Add a person to the database</h4>
+<br>
+<form (submit)="onSubmit()" #addForm="ngForm">
+  <div class="md-form">
+    <input required minlength="5" maxlength="30" pattern="[a-zA-Z ]*" #name="ngModel" type="text" id="defaultForm-name" class="form-control"
+      mdbActive [(ngModel)]="person.name" name="name">
+    <label [class.active]="person.name && person.name.length > 0" for="defaultForm-name">Name</label>
+  </div>
+  <div class="alert alert-danger" *ngIf="name.touched && !name.valid">
+    <div *ngIf="name.errors.required">
+      The name is required.
+    </div>
+    <div *ngIf="name.errors.minlength && !name.errors.pattern">
+      The name should be at least 5 characters.
+    </div>
+    <div *ngIf="name.errors.pattern">
+      The name should contain only alphabetical characters.
+    </div>
+  </div>
+
+  <div class="md-form">
+    <input required #date="ngModel" class="textbox-n form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
+      id="defaultForm-date" mdbActive [(ngModel)]="person.date" name="date">
+    <label [class.active]="person.date && person.date.length > 0" for="defaultForm-date">Date</label>
+  </div>
+  <div class="alert alert-danger" *ngIf="date.touched && !date.valid">
+    <div *ngIf="date.errors.required">
+      The date is required.
+    </div>
+  </div>
+
+  <div class="text-justify">
+    <button class="btn btn-success" mdbRippleRadius [disabled]="!addForm.valid">Add</button>
+  </div>
+</form>

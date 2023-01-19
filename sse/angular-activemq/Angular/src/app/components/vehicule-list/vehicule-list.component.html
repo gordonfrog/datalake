@@ -1,0 +1,324 @@
+<div class="container">
+  <app-add-vehicule></app-add-vehicule>
+  <br>
+  <div class="container" *ngIf="cars?.length > 0 || vans?.length > 0; else noItems">
+    <h4>List of vehicules</h4>
+    <div>
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="col-sm-4">
+              <label for="sort-field"><b>Sort By</b></label>
+              <select name="sort-field" id="sort-field" class="form-control" [(ngModel)]="sortFieldCar">
+                <option *ngFor="let field of sortFieldsCar" [value]="field">
+                  {{field}}</option>
+              </select>
+            </div>
+            <label id="direction"><b>Sort Direction</b></label>
+            <div id="order">
+              <button class="btn btn-light-green btn-sm" id="ascCar" (click)="onAscCar()">Ascending</button>
+
+              <button class="btn btn-mdb btn-sm" id="descCar" (click)="onDescCar()">Descending</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <h6>List of cars</h6>
+      <div class="row">
+        <div class="col-md-4" *ngFor="let car of cars | sortBy:[sortFieldCar, sortDirectionCar]">
+          <div class="card card-body" id="vehicule_card">
+            <h4 class="card-title">{{car.model}}</h4>
+            <h6 class="card-title">Car</h6>
+            <li class="card-text">{{ car.plateNumber }}</li>
+            <li class="card-text">{{ car.seats }} seats</li>
+            <li class="card-text" id="rent_list">{{ car.price | currency:"USD":"symbol"}} per day</li>
+            <div class="row">
+              <button class="btn btn-primary btn-sm" mdbRippleRadius (click)="onEditClickCar(car)">Edit</button>
+              <button class="btn btn-danger btn-sm" mdbRippleRadius (click)="onDeleteClickCar(car.vehiculeId)">Delete</button>
+            </div>
+          </div>
+          <br>
+        </div>
+      </div>
+      <div class="col-sm-12">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="col-sm-4">
+                <label for="sort-field"><b>Sort By</b></label>
+                <select name="sort-field" id="sort-field" class="form-control" [(ngModel)]="sortFieldVan">
+                  <option *ngFor="let field of sortFieldsVan" [value]="field">
+                    {{field}}</option>
+                </select>
+              </div>
+              <label id="direction"><b>Sort Direction</b></label>
+              <div id="order">
+                <button class="btn btn-light-green btn-sm" id="ascVan" (click)="onAscVan()">Ascending</button>
+  
+                <button class="btn btn-mdb btn-sm" id="descVan" (click)="onDescVan()">Descending</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <h6>List of vans</h6>
+        <div class="row">
+          <div class="col-md-4" *ngFor="let van of vans | sortBy:[sortFieldVan, sortDirectionVan]">
+            <div class="card card-body" id="vehicule_card">
+              <h4 class="card-title">{{van.model}}</h4>
+              <h6 class="card-title">Van</h6>
+              <li class="card-text">{{ van.plateNumber }}</li>
+              <li class="card-text">{{ van.maxWeight }} kgs</li>
+              <li class="card-text" id="rent_list">{{ van.price | currency:"USD":"symbol"}} per day</li>
+              <div class="row">
+                <button class="btn btn-primary btn-sm" mdbRippleRadius (click)="onEditClickVan(van)">Edit</button>
+                <button class="btn btn-danger btn-sm" mdbRippleRadius (click)="onDeleteClickVan(van.vehiculeId)">Delete</button>
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+    </div>
+    <br>
+
+
+    <div mdbModal #updateCarModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">Edit Car</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="updateCarModal.hide()">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form (submit)="onSubmitCar()" #updateCarForm="ngForm">
+              <div class="md-form">
+                <input required minlength="5" maxlength="40" #carmodel="ngModel" type="text" id="defaultForm-model" class="form-control"
+                  mdbActive [ngModel]="car.model" name="model">
+                <label [class.active]="car.model && car.model.length > 0" for="defaultForm-model">Model</label>
+              </div>
+              <div class="alert alert-danger" *ngIf="carmodel.touched && !carmodel.valid">
+                <div *ngIf="carmodel.errors.required">
+                  The model is required.
+                </div>
+                <div *ngIf="carmodel.errors.minlength">
+                  The model should be at least 5 characters.
+                </div>
+              </div>
+
+              <div class="md-form">
+                <input required minlength="9" maxlength="9" pattern="[A-Z0-9- ]*" #carplate="ngModel" type="text" id="defaultForm-plateNumber"
+                  class="form-control" mdbActive [ngModel]="car.plateNumber" name="p_number">
+                <label [class.active]="car.plateNumber && car.plateNumber.length > 0" for="defaultForm-plateNumber">Plate Number</label>
+              </div>
+              <div class="alert alert-danger" *ngIf="carplate.touched && !carplate.valid">
+                <div *ngIf="carplate.errors.required">
+                  The plate number is required.
+                </div>
+                <div *ngIf="carplate.errors.minlength && !carplate.errors.pattern">
+                  The plate number should be at least 9 characters.
+                </div>
+                <div *ngIf="carplate.errors.pattern">
+                  Invalid character detected.
+                </div>
+              </div>
+
+              <div class="md-form">
+                <input required #seats="ngModel" type="number" min="2" max="10" id="defaultForm-seats" class="form-control" mdbActive [ngModel]="car.seats"
+                  name="seats">
+                <label [class.active]="car.seats && car.seats.length !== null" for="defaultForm-seats">Seats</label>
+              </div>
+              <div class="alert alert-danger" *ngIf="seats.touched && !seats.valid">
+                <div *ngIf="seats.errors.required">
+                  The number of seats is required.
+                </div>
+              </div>
+
+              <div class="md-form">
+                <input required #carprice="ngModel" type="number" min="1" step="any" id="defaultForm-price" class="form-control" mdbActive
+                  [ngModel]="car.price" name="price">
+                <label [class.active]="car.price && car.price.length !== null" for="defaultForm-price">Price</label>
+              </div>
+              <div class="alert alert-danger" *ngIf="carprice.touched && !carprice.valid">
+                <div *ngIf="carprice.errors.required">
+                  The price is required.
+                </div>
+              </div>
+
+              <div class="text-justify">
+                <button class="btn btn-success" mdbRippleRadius [disabled]="!updateCarForm.valid">Add</button>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-mdb btn-sm waves-light" data-dismiss="modal" (click)="updateCarModal.hide()" mdbRippleRadius>Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div mdbModal #deleteCarConf="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">Delete Car</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="deleteCarConf.hide()">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete this car?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger btn-sm waves-light" data-dismiss="modal" (click)="onProceedCar()" mdbRippleRadius>Proceed</button>
+            <button type="button" class="btn btn-mdb btn-sm waves-light" data-dismiss="modal" (click)="deleteCarConf.hide()" mdbRippleRadius>Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div mdbModal #updateVanModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">Edit Van</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="updateVanModal.hide()">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form (submit)="onSubmitVan()" #updateVanForm="ngForm">
+              <div class="md-form">
+                <input required minlength="5" maxlength="40" #model="ngModel" type="text" id="defaultForm-model" class="form-control" mdbActive
+                  [ngModel]="van.model" name="model">
+                <label [class.active]="van.model && van.model.length > 0" for="defaultForm-model">Model</label>
+              </div>
+              <div class="alert alert-danger" *ngIf="model.touched && !model.valid">
+                <div *ngIf="model.errors.required">
+                  The model is required.
+                </div>
+                <div *ngIf="model.errors.minlength">
+                  The model should be at least 5 characters.
+                </div>
+              </div>
+
+              <div class="md-form">
+                <input required minlength="9" maxlength="9" pattern="[A-Z0-9- ]*" #plate="ngModel" type="text" id="defaultForm-plateNumber"
+                  class="form-control" mdbActive [ngModel]="van.plateNumber" name="p_number">
+                <label [class.active]="van.plateNumber && van.plateNumber.length > 0" for="defaultForm-plateNumber">Plate Number</label>
+              </div>
+              <div class="alert alert-danger" *ngIf="plate.touched && !plate.valid">
+                <div *ngIf="plate.errors.required">
+                  The plate number is required.
+                </div>
+                <div *ngIf="plate.errors.minlength && !plate.errors.pattern">
+                  The plate number should be at least 9 characters.
+                </div>
+                <div *ngIf="plate.errors.pattern">
+                  Invalid character detected.
+                </div>
+              </div>
+
+              <div class="md-form">
+                <input required #weight="ngModel" type="number" min="1500" step="any" id="defaultForm-weight" class="form-control" mdbActive
+                  [ngModel]="van.maxWeight" name="weight">
+                <label [class.active]="van.maxWeight && van.maxWeight.length !== null" for="defaultForm-weight">Max Weight</label>
+              </div>
+              <div class="alert alert-danger" *ngIf="weight.touched && !weight.valid">
+                <div *ngIf="weight.errors.required">
+                  The maximum weight is required.
+                </div>
+              </div>
+
+              <div class="md-form">
+                <input required #price="ngModel" type="number" min="1" step="any" id="defaultForm-price" class="form-control" mdbActive [ngModel]="van.price"
+                  name="price">
+                <label [class.active]="van.price && van.price.length !== null" for="defaultForm-price">Price</label>
+              </div>
+              <div class="alert alert-danger" *ngIf="price.touched && !price.valid">
+                <div *ngIf="price.errors.required">
+                  The price is required.
+                </div>
+              </div>
+
+              <div class="text-justify">
+                <button class="btn btn-success" mdbRippleRadius [disabled]="!updateVanForm.valid">Add</button>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-mdb btn-sm waves-light" data-dismiss="modal" (click)="updateVanModal.hide()" mdbRippleRadius>Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div mdbModal #deleteVanConf="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">Delete Van</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="deleteVanConf.hide()">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete this van?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger btn-sm waves-light" data-dismiss="modal" (click)="onProceedVan()" mdbRippleRadius>Proceed</button>
+            <button type="button" class="btn btn-mdb btn-sm waves-light" data-dismiss="modal" (click)="deleteVanConf.hide()" mdbRippleRadius>Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div mdbModal #vanBadInput="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">Error</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="vanBadInput.hide()">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>{{errorMessage}}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger btn-sm waves-light" data-dismiss="modal" (click)="vanBadInput.hide()" mdbRippleRadius>Got it</button>
+            <button type="button" class="btn btn-mdb btn-sm waves-light" data-dismiss="modal" (click)="vanBadInput.hide()" mdbRippleRadius>Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div mdbModal #carBadInput="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">Error</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="carBadInput.hide()">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>{{errorMessage}}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger btn-sm waves-light" data-dismiss="modal" (click)="carBadInput.hide()" mdbRippleRadius>Got it</button>
+            <button type="button" class="btn btn-mdb btn-sm waves-light" data-dismiss="modal" (click)="carBadInput.hide()" mdbRippleRadius>Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noItems>
+      <div class="container">
+        <h4>Your vehicule list is empty.</h4>
+      </div>
+      <br>
+    </ng-template>
+  </div>
